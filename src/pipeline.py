@@ -9,17 +9,17 @@ class AstraVisionPipeline:
         self.model = YOLO(model_path)
         self.conf_threshold = conf_threshold
         
-        # Map YOLO class IDs to our specific route names
+        # Map YOLO class IDs to the specific route names
         self.class_names = {0: "route_center", 1: "route_left", 2: "route_right"}
 
     def process_frame(self, frame):
         """Runs inference and formats the output."""
         timestamp = time.time()
         
-        # Pass the raw frame, but let YOLO safely scale it to 640 natively
+        # Pass the raw frame but let YOLO safely scale it to 640 natively
         results = self.model.predict(source=frame, imgsz=640, conf=self.conf_threshold, verbose=False)
         
-        # Save the output image so you can see the boxes!
+        # Save the output image to see the boxes drawn by YOLO (for debugging)
         results[0].save('data/annotated_output.jpg')
         
         detections = []
